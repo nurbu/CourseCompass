@@ -1,0 +1,47 @@
+# CourseCompass API Testing File
+# Click the "Send Request" link above each request to test
+
+# Set the base URL with YOUR correct port
+@CourseCompass.API_HostAddress = https://localhost:7036
+
+### Test: Get all courses (should return empty array initially)
+GET {{CourseCompass.API_HostAddress}}/api/courses
+Accept: application/json
+
+### Test: Create a new course
+POST {{CourseCompass.API_HostAddress}}/api/courses
+Content-Type: application/json
+
+{
+  "code": "CSIT 340",
+  "title": "Data Structures and Algorithms",
+  "credits": 4,
+  "description": "Introduction to data structures, algorithms, and algorithm analysis",
+  "department": "Computer Science",
+  "prerequisites": ["CSIT 220", "MATH 225"]
+}
+
+### Test: Create another course
+POST {{CourseCompass.API_HostAddress}}/api/courses
+Content-Type: application/json
+
+{
+  "code": "CSIT 355",
+  "title": "Database Systems",
+  "credits": 3,
+  "description": "Introduction to database design and SQL",
+  "department": "Computer Science",
+  "prerequisites": ["CSIT 220"]
+}
+
+### Test: Get all courses again (should now show our created courses)
+GET {{CourseCompass.API_HostAddress}}/api/courses
+Accept: application/json
+
+### Test: Get a specific course by ID
+GET {{CourseCompass.API_HostAddress}}/api/courses/1
+Accept: application/json
+
+### Test: WeatherForecast (original endpoint)
+GET {{CourseCompass.API_HostAddress}}/weatherforecast/
+Accept: application/json
