@@ -1,0 +1,14 @@
+<div class="app-container">
+  <mat-toolbar color="primary" class="app-toolbar">
+    <mat-icon>school</mat-icon>
+    <span class="app-title">{{ title }}</span>
+    <span class="spacer"></span>
+    <button mat-icon-button>
+      <mat-icon>account_circle</mat-icon>
+    </button>
+  </mat-toolbar>
+  
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

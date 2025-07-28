@@ -24,6 +24,10 @@ namespace CourseCompass.API.Data
         // Each Course object = one row in the Courses table
         public DbSet<Course> Courses { get; set; }
 
+        // Enrollments DbSet = Enrollments table in database
+        // Each Enrollment object = one row showing a student taking a course
+        public DbSet<Enrollment> Enrollments { get; set; }
+
         // OnModelCreating: This is where we define HOW our database tables should be structured
         // Think of it as the "blueprint" for your database tables
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -83,6 +87,23 @@ namespace CourseCompass.API.Data
                         // Example: "CSIT 220,MATH 225" becomes ["CSIT 220", "MATH 225"]
                         v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList()
                     );
+            });
+
+            // Configure the Enrollments table structure and relationships
+            // Configure the Enrollments table structure and relationships
+            modelBuilder.Entity<Enrollment>(entity =>
+            {
+                // Primary Key: The unique identifier for each enrollment
+                entity.HasKey(e => e.Id);
+
+                // Semester column: Required, max 20 characters (like "Fall 2024")
+                entity.Property(e => e.Semester).IsRequired().HasMaxLength(20);
+
+                // Grade column: Optional, max 20 characters (changed from 5 to 20)
+                // This allows for "In Progress", "Incomplete", "Withdrawn", etc.
+                entity.Property(e => e.Grade).HasMaxLength(20);
+
+                // ... rest of the configuration stays the same
             });
         }
     }

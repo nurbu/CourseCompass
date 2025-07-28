@@ -4,6 +4,7 @@ using CourseCompass.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourseCompass.Migrations
 {
     [DbContext(typeof(CourseCompassDbContext))]
-    partial class CourseCompassDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250718061800_FixGradeColumnSize")]
+    partial class FixGradeColumnSize
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

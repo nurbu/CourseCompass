@@ -4,6 +4,7 @@ using CourseCompass.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourseCompass.Migrations
 {
     [DbContext(typeof(CourseCompassDbContext))]
-    partial class CourseCompassDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250718060705_AddEnrollments")]
+    partial class AddEnrollments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,8 +81,8 @@ namespace CourseCompass.Migrations
 
                     b.Property<string>("Grade")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
                     b.Property<bool>("IsCompleted")
                         .HasColumnType("bit");
@@ -99,7 +102,9 @@ namespace CourseCompass.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("StudentId", "CourseId", "Semester", "Year")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Enrollment_Student_Course_Semester");
 
                     b.ToTable("Enrollments");
                 });
