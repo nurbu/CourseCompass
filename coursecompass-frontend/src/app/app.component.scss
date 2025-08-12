@@ -8,12 +8,17 @@
   position: sticky;
   top: 0;
   z-index: 1000;
+  backdrop-filter: blur(10px);
+  background: rgba(63, 81, 181, 0.95) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .app-title {
-  margin-left: 8px;
+  margin-left: 12px;
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .spacer {
@@ -23,5 +28,34 @@
 .main-content {
   flex: 1;
   overflow-y: auto;
-  background-color: #fafafa;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  position: relative;
+}
+
+/* Add some subtle animation */
+.app-toolbar {
+  transition: all 0.3s ease;
+}
+
+/* Profile button hover effect */
+.app-toolbar button[mat-icon-button] {
+  transition: all 0.2s ease;
+  border-radius: 50%;
+}
+
+.app-toolbar button[mat-icon-button]:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.05);
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .app-title {
+    font-size: 18px;
+    margin-left: 8px;
+  }
+  
+  .app-toolbar {
+    padding: 0 12px;
+  }
 }

@@ -1,14 +1,14 @@
 export interface PrerequisiteValidationResult {
-  canEnroll: boolean;
-  courseCode: string;
-  courseTitle: string;
-  requiredPrerequisites: string[];
-  completedPrerequisites: string[];
+  isEligible: boolean;
   missingPrerequisites: string[];
   message: string;
+  recommendations?: string[];
 }
 
-export interface PrerequisiteCheckRequest {
-  studentId: number;
+export interface CourseEligibility {
   courseId: number;
+  courseCode: string;
+  courseTitle: string;
+  isEligible: boolean;
+  reason?: string;
 }
