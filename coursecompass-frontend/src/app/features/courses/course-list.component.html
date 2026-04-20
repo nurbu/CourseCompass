@@ -1,0 +1,161 @@
+<!-- Course List Template -->
+<div class="course-list-container">
+  <!-- Header -->
+  <div class="header">
+    <h1>Course Catalog</h1>
+    <p>Browse and explore available courses</p>
+  </div>
+
+  <!-- Filters -->
+  <mat-card class="filters-card">
+    <mat-card-content>
+      <div class="filters-row">
+        <!-- Search Input -->
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search courses</mat-label>
+          <input matInput 
+                 [(ngModel)]="searchTerm" 
+                 (input)="onSearchChange()"
+                 placeholder="Search by code, title, or description">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+
+        <!-- Department Filter -->
+        <mat-form-field appearance="outline" class="department-field">
+          <mat-label>Department</mat-label>
+          <mat-select [(value)]="selectedDepartment" (selectionChange)="onDepartmentChange()">
+            <mat-option value="">All Departments</mat-option>
+            <mat-option *ngFor="let dept of departments" [value]="dept">
+              {{dept}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Clear Filters Button -->
+        <button mat-raised-button 
+                color="accent" 
+                (click)="clearFilters()"
+                class="clear-button">
+          <mat-icon>clear</mat-icon>
+          Clear Filters
+        </button>
+      </div>
+
+      <!-- Results Count -->
+      <div class="results-info">
+        <span class="results-count">
+          Showing {{filteredCourses.length}} of {{courses.length}} courses
+        </span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>Loading courses...</p>
+  </div>
+
+  <!-- Error Message -->
+  <mat-card *ngIf="error" class="error-card">
+    <mat-card-content>
+      <div class="error-content">
+        <mat-icon color="warn">error</mat-icon>
+        <span>{{error}}</span>
+        <button mat-button color="primary" (click)="loadCourses()">
+          <mat-icon>refresh</mat-icon>
+          Retry
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Course Table -->
+  <mat-card *ngIf="!loading && !error" class="table-card">
+    <div class="table-container">
+      <table mat-table [dataSource]="filteredCourses" class="courses-table">
+        
+        <!-- Course Code Column -->
+        <ng-container matColumnDef="code">
+          <th mat-header-cell *matHeaderCellDef>Course Code</th>
+          <td mat-cell *matCellDef="let course">
+            <span class="course-code">{{course.code}}</span>
+          </td>
+        </ng-container>
+
+        <!-- Course Title Column -->
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>Title</th>
+          <td mat-cell *matCellDef="let course">
+            <div class="course-title-cell">
+              <span class="course-title">{{course.title}}</span>
+              <span class="course-description">{{course.description}}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Credits Column -->
+        <ng-container matColumnDef="credits">
+          <th mat-header-cell *matHeaderCellDef>Credits</th>
+          <td mat-cell *matCellDef="let course">
+            <span class="credits-chip">{{course.credits}} credits</span>
+          </td>
+        </ng-container>
+
+        <!-- Department Column -->
+        <ng-container matColumnDef="department">
+          <th mat-header-cell *matHeaderCellDef>Department</th>
+          <td mat-cell *matCellDef="let course">
+            <span class="department">{{course.department}}</span>
+          </td>
+        </ng-container>
+
+        <!-- Prerequisites Column -->
+        <ng-container matColumnDef="prerequisites">
+          <th mat-header-cell *matHeaderCellDef>Prerequisites</th>
+          <td mat-cell *matCellDef="let course">
+            <div class="prerequisites-cell">
+              <span *ngIf="course.prerequisites.length === 0" class="no-prereqs">None</span>
+              <span *ngFor="let prereq of course.prerequisites; let last = last" class="prereq-item">
+                {{prereq}}<span *ngIf="!last">, </span>
+              </span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let course">
+            <div class="actions-cell">
+              <button mat-icon-button 
+                      color="primary"
+                      (click)="viewCourseDetails(course.id)"
+                      matTooltip="View Details">
+                <mat-icon>visibility</mat-icon>
+              </button>
+              <button mat-icon-button 
+                      color="accent"
+                      matTooltip="Check Prerequisites">
+                <mat-icon>check_circle</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Header and Row Definitions -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
+            class="course-row"
+            (click)="viewCourseDetails(row.id)"></tr>
+      </table>
+
+      <!-- No Results Message -->
+      <div *ngIf="filteredCourses.length === 0 && !loading" class="no-results">
+        <mat-icon>search_off</mat-icon>
+        <h3>No courses found</h3>
+        <p>Try adjusting your search criteria or filters.</p>
+      </div>
+    </div>
+  </mat-card>
+</div>

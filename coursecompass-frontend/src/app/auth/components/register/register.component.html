@@ -1,0 +1,138 @@
+<div class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center p-4">
+  <div class="w-full max-w-md">
+    <div class="bg-white/90 backdrop-blur-sm shadow-2xl rounded-3xl p-8 border border-gray-100">
+      <div class="flex flex-col items-center mb-8">
+        <app-logo size="medium" [showText]="true"></app-logo>
+        <div class="text-center mt-4">
+          <h1 class="text-2xl font-bold text-gray-800">Create Account</h1>
+          <p class="text-sm text-gray-500 mt-1">Join CourseCompass and start planning</p>
+        </div>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="registerWithEmailPassword()" class="space-y-5">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+            <input
+              id="firstName"
+              type="text"
+              formControlName="firstName"
+              autocomplete="given-name"
+              class="w-full rounded-xl border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-gray-800 placeholder-gray-400 transition-all duration-200"
+              placeholder="John"
+            />
+            <div class="mt-1 text-xs text-red-600" *ngIf="form.controls.firstName.touched && form.controls.firstName.invalid">
+              <span *ngIf="form.controls.firstName.errors?.['required']">First name is required.</span>
+              <span *ngIf="form.controls.firstName.errors?.['minlength']">Too short.</span>
+            </div>
+          </div>
+
+          <div>
+            <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+            <input
+              id="lastName"
+              type="text"
+              formControlName="lastName"
+              autocomplete="family-name"
+              class="w-full rounded-xl border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-gray-800 placeholder-gray-400 transition-all duration-200"
+              placeholder="Doe"
+            />
+            <div class="mt-1 text-xs text-red-600" *ngIf="form.controls.lastName.touched && form.controls.lastName.invalid">
+              <span *ngIf="form.controls.lastName.errors?.['required']">Last name is required.</span>
+              <span *ngIf="form.controls.lastName.errors?.['minlength']">Too short.</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            autocomplete="email"
+            class="w-full rounded-xl border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-gray-800 placeholder-gray-400 transition-all duration-200"
+            placeholder="john@university.edu"
+          />
+          <div class="mt-1 text-xs text-red-600" *ngIf="form.controls.email.touched && form.controls.email.invalid">
+            <span *ngIf="form.controls.email.errors?.['required']">Email is required.</span>
+            <span *ngIf="form.controls.email.errors?.['email']">Enter a valid email.</span>
+          </div>
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <div class="relative">
+            <input
+              [type]="showPassword() ? 'text' : 'password'"
+              id="password"
+              formControlName="password"
+              autocomplete="new-password"
+              class="w-full rounded-xl border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-gray-800 placeholder-gray-400 pr-12 transition-all duration-200"
+              placeholder="••••••••"
+            />
+            <button type="button" (click)="togglePasswordVisibility()" 
+                    class="absolute inset-y-0 right-0 px-3 text-gray-500 hover:text-gray-700 transition-colors">
+              <span *ngIf="!showPassword(); else hidePassword" class="text-xs">Show</span>
+              <ng-template #hidePassword><span class="text-xs">Hide</span></ng-template>
+            </button>
+          </div>
+          <div class="mt-1 text-xs text-red-600" *ngIf="form.controls.password.touched && form.controls.password.invalid">
+            <span *ngIf="form.controls.password.errors?.['required']">Password is required.</span>
+            <span *ngIf="form.controls.password.errors?.['minlength']">Minimum 6 characters.</span>
+          </div>
+        </div>
+
+        <div>
+          <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+          <div class="relative">
+            <input
+              [type]="showConfirmPassword() ? 'text' : 'password'"
+              id="confirmPassword"
+              formControlName="confirmPassword"
+              autocomplete="new-password"
+              class="w-full rounded-xl border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-gray-800 placeholder-gray-400 pr-12 transition-all duration-200"
+              placeholder="••••••••"
+            />
+            <button type="button" (click)="toggleConfirmPasswordVisibility()" 
+                    class="absolute inset-y-0 right-0 px-3 text-gray-500 hover:text-gray-700 transition-colors">
+              <span *ngIf="!showConfirmPassword(); else hideConfirmPassword" class="text-xs">Show</span>
+              <ng-template #hideConfirmPassword><span class="text-xs">Hide</span></ng-template>
+            </button>
+          </div>
+          <div class="mt-1 text-xs text-red-600" *ngIf="form.controls.confirmPassword.touched && (form.controls.confirmPassword.invalid || form.hasError('passwordMismatch'))">
+            <span *ngIf="form.controls.confirmPassword.errors?.['required']">Please confirm your password.</span>
+            <span *ngIf="form.hasError('passwordMismatch') && !form.controls.confirmPassword.errors?.['required']">Passwords don't match.</span>
+          </div>
+        </div>
+
+        <button type="submit" [disabled]="isLoading() || form.invalid" 
+                class="w-full inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-3 text-white font-semibold hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl">
+          <svg *ngIf="isLoading()" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+          </svg>
+          <span>Create Account</span>
+        </button>
+      </form>
+
+      <div class="relative my-6">
+        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-200"></div></div>
+        <div class="relative flex justify-center text-sm"><span class="bg-white px-4 text-gray-500">or continue with</span></div>
+      </div>
+
+      <button (click)="signUpWithGoogle()" [disabled]="isLoading()" 
+              class="w-full inline-flex items-center justify-center gap-3 rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-gray-700 font-medium hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200">
+        <img alt="Google" src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-5 w-5" />
+        <span>Sign up with Google</span>
+      </button>
+
+      <p class="mt-6 text-center text-sm text-gray-600">
+        Already have an account?
+        <a routerLink="/login" class="text-indigo-600 hover:text-indigo-700 font-semibold transition-colors">Sign in</a>
+      </p>
+
+      <p class="mt-2 text-center text-xs text-red-600 min-h-4" *ngIf="errorMessage()">{{ errorMessage() }}</p>
+    </div>
+  </div>
+</div>

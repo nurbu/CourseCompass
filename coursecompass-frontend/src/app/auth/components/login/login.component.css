@@ -1,0 +1,41 @@
+:host {
+  display: block;
+}
+
+/* Enhanced transitions for modern feel */
+@media (hover: hover) {
+  .hover\:bg-gray-50:hover,
+  .hover\:from-indigo-700:hover,
+  .hover\:to-blue-700:hover {
+    transition: all 200ms ease-in-out;
+  }
+  
+  .hover\:shadow-xl:hover {
+    transition: box-shadow 200ms ease-in-out;
+  }
+  
+  .transition-colors {
+    transition: color 200ms ease-in-out;
+  }
+}
+
+/* Custom focus styles */
+input:focus {
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Loading state enhancements */
+.disabled\:opacity-50:disabled {
+  transform: scale(0.98);
+  transition: transform 100ms ease-in-out;
+}
+
+/* Checkbox styling */
+input[type="checkbox"] {
+  border-radius: 4px;
+}
+
+input[type="checkbox"]:checked {
+  background-color: rgb(99, 102, 241);
+  border-color: rgb(99, 102, 241);
+}
